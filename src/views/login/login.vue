@@ -8,7 +8,7 @@
         <div class="login-form">
           <div class="lable">
             <div class="hint">用户名/手机号/邮箱</div>
-            <el-input class="input" v-model="email" placeholder="请输入用户名/手机号/邮箱"></el-input>
+            <el-input class="input" maxlength="11" v-model="accountNo" placeholder="请输入用户名/手机号/邮箱"></el-input>
           </div>
           <div class="lable">
             <div class="hint">密码</div>
@@ -17,8 +17,10 @@
           <div class="lable">
             <div class="hint">验证码</div>
             <div class="yanzhen-warp">
-              <el-input class="input yanzhen" v-model="verification" placeholder="请输入验证码"></el-input>
-              <div class="yanzhenPic"></div>
+              <el-input class="input yanzhen" v-model="verifyCode" placeholder="请输入验证码"></el-input>
+              <div class="yanzhenPic" @click="VerifyCode">
+                <img style="width:100%;height:100%;" :src="imgurl" alt />
+              </div>
             </div>
           </div>
           <el-button @click="toLogin" class="login-button">登录</el-button>
@@ -30,21 +32,47 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import { login } from "@/https/api";
 export default {
   data() {
     return {
-      email: "",
+      accountNo: "",
       pwd: "",
-      verification: ""
+      verifyCode: "",
+      imgurl:
+        "http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode",
+      errmsg: ""
     };
   },
   methods: {
     ...mapActions(["setUserInfo"]),
-    toLogin(){
-      // this.$router.push
-      console.log('jump')
-      this.setUserInfo({})
-      this.$router.push('/admin')
+    async toLogin() {
+      const { accountNo, pwd, verifyCode } = this;
+      if (!/^1\d{10}$/.test(accountNo)) {
+        this.errmsg = "非法手机号";
+        return;
+      }
+      if (this.pwd.trim().length < 6 || this.pwd.trim().length > 20) {
+        this.errmsg = "密码长度在6至20位";
+        return;
+      }
+      const result = await login({
+        accountNo: +accountNo,
+        pwd: +pwd,
+        verifyCode:verifyCode
+      });
+      console.log(result);
+      // this.setUserInfo({})
+      // this.$router.push('/admin')
+    },
+    VerifyCode() {
+      this.imgurl =
+        "http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode?date=" +
+        Date.now();
+      // this.showimg = false;
+      // getVerifyCode().then(res =>{
+      //   this.showimg = true
+      // });
     }
   }
 };
@@ -87,9 +115,9 @@ export default {
             color: #b0bac9;
             margin: 10px 0 5px 0;
           }
-          .input{
-            /deep/ .el-input__inner{
-              background: #E0E7FF;
+          .input {
+            /deep/ .el-input__inner {
+              background: #e0e7ff;
             }
           }
           .yanzhen-warp {
@@ -101,7 +129,7 @@ export default {
               margin-left: 10px;
               flex: 1;
               border-radius: 4px;
-              border: 1px solid rgba(224,231,255,1);
+              border: 1px solid rgba(224, 231, 255, 1);
             }
           }
         }

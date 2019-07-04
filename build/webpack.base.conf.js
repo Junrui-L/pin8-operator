@@ -7,13 +7,24 @@ const vueLoaderConfig = require('./vue-loader.conf')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-
-
-
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
+  },
+  devServer: {
+    disableHostCheck: true,
+    port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://pinbauat.cnlaunch.com/', // 测试服
+          // target: 'http://pinba.szyrwl.com/',
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   },
   output: {
     path: config.build.assetsRoot,
