@@ -12,10 +12,11 @@ export const getVerifyCode = () => $http.get('/manage-api/api/v1/login/getVerify
 /**
  *02 用户登陆
  * */
-export const login = data => $http.post('/manage-api/api/v1/login',{ 
-	"accountNo": data.accountNo,
-	"pwd": data.pwd,
-	"type": "01",
-	"validCode": "0000",
-	"verifyCode": data.verifyCode
-})
+export const login = data => $http.post('/manage-api/api/v1/login',JSON.stringify(data))
+// { 
+// 	"accountNo": data.accountNo,
+// 	"pwd": data.pwd,
+// 	"type": "01",
+// 	"validCode": "0000",
+// 	"verifyCode": data.verifyCode
+// }

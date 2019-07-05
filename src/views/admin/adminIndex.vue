@@ -17,9 +17,9 @@ export default {
   computed: {
     ...mapGetters(["userInfo"])
   },
-  created() {
+  mounted (){
     if (!this.userInfo) {
-      this.$router.replace("/login");
+      this.$router.push("/login");
     }
   },
   components: {

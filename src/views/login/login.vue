@@ -59,6 +59,8 @@ export default {
       const result = await login({
         accountNo: +accountNo,
         pwd: +pwd,
+        type: "01",
+	      validCodes: "0000",
         verifyCode:verifyCode
       });
       console.log(result);

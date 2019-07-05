@@ -17,19 +17,20 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV === 'production') {
   // uat测试服
-  axios.defaults.baseURL = 'http://pinbauat.cnlaunch.com/'
+  // axios.defaults.baseURL = 'http://pinbauat.cnlaunch.com/'
 
   // pinba正式服
-  // axios.defaults.baseURL = 'http://pinba.szyrwl.com/'
+  axios.defaults.baseURL = 'http://pinba.szyrwl.com/'
 
 }
 
-axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.headers['spell-access-token'] = ' '
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+axios.defaults.headers['Content-Type'] = 'application/json'
+// axios.defaults.headers['spell-access-token'] = ' '
 axios.defaults.timeout = 10000 // 超时设置10s
 export default (() => {
   return {
-    get (url, data) {
+    get(url, data) {
       return new Promise((resolve, reject) => {
         axios.get(url, {
           params: data,
@@ -53,17 +54,20 @@ export default (() => {
           })
       })
     },
-    post (url, data) {
+    post(url, data) {
       // TODO 根据data的类型封装不同的post请求格式
       return new Promise((resolve, reject) => {
-        axios.post(url, {
-          data: (data != null && typeof data === 'object' && Array.isArray(data) === false) ? JSON.stringify(data) : data, // 对象要序列化
-          // sign: "",
-          // token: ""
-        }, {
-          withCredentials: true,
-          headers: { 'Content-Type': 'application/json; charset=utf-8' }
-        })
+        axios.post(url,
+          data
+          // {
+          //   data: (data != null && typeof data === 'object' && Array.isArray(data) === false) ? JSON.stringify(data) : data, // 对象要序列化
+          //   sign: "",
+          //   token: ""
+          // }
+          , {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+          })
           .then(function (response) {
             // console.log(response.data)
 
