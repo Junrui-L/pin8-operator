@@ -19,7 +19,7 @@ export default {
   },
   mounted (){
     if (!this.userInfo) {
-      this.$router.push("/login");
+      this.$router.replace("/login");
     }
   },
   components: {

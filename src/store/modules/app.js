@@ -1,5 +1,6 @@
 import {
-  SET_USERINFO
+  SET_USERINFO,
+  CLEAR_USERINFO
 } from '../mutation-types';
 import { Ls } from '@/uitls'
 
@@ -15,11 +16,18 @@ const app = {
         userStore.set('userInfo', userInfo);
         state.userInfo = userInfo;
       }
-    }
+    },
+    [CLEAR_USERINFO]: (state) => {
+      userStore.clear('userInfo');
+      state.userInfo = null;
+    },
   },
   actions: {
     setUserInfo: ({ commit }, userInfo) => {
       commit(SET_USERINFO, userInfo)
+    },
+    clearUserInfo:({commit})=>{
+      commit(CLEAR_USERINFO)
     }
   }
 };

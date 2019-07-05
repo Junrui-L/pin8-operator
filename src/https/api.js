@@ -13,10 +13,18 @@ export const getVerifyCode = () => $http.get('/manage-api/api/v1/login/getVerify
  *02 用户登陆
  * */
 export const login = data => $http.post('/manage-api/api/v1/login',JSON.stringify(data))
-// { 
-// 	"accountNo": data.accountNo,
-// 	"pwd": data.pwd,
-// 	"type": "01",
-// 	"validCode": "0000",
-// 	"verifyCode": data.verifyCode
-// }
+
+/**
+ * 03 用户退出登陆
+ */
+export const out = (data) => $http.get('/manage-api/api/v1/login/out')
+
+/**
+ * 04 产品数据统计
+ */
+export const product = () => $http.get('/manage-api/api/v1/statistics/product')
+
+/**
+ * 05 收入分析统计
+ */
+export const income = () => $http.get('/manage-api/api/v1/statistics/income')

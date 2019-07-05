@@ -2,25 +2,65 @@
   <div class="header-warp">
     <div class="header-main">
       <div class="user-msg">
+        <div
+          class="userName"
+          style="line-height:80px"
+          v-if="userInfo"
+        >{{userInfo.name === null?userInfo.accountNo:userInfo.name}}</div>
         <div class="header-avater">
           <el-avatar class="avater-img" :size="40" :src="circleUrl"></el-avatar>
         </div>
-        <div class="userName" style="line-height:80px">{{userName}}</div>
       </div>
     </div>
-    <div class="header-exit" style="height:80px;width:80px;">
+    <div class="header-exit" @click="toexit" style="height:80px;width:80px;">
       <i class="el-icon-switch-button exit" style="line-height:80px;"></i>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { out } from "@/https/api";
+
 export default {
   data() {
     return {
       circleUrl:
-        "https://lanhu.oss-cn-beijing.aliyuncs.com/SketchSlicePng50b513dcda8961df336cbfb339f04713",
-      userName: "tangjia"
+        "https://lanhu.oss-cn-beijing.aliyuncs.com/SketchSlicePng50b513dcda8961df336cbfb339f04713"
     };
+  },
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
+  methods: {
+    ...mapActions(["clearUserInfo"]),
+    toexit() {
+      this.$confirm("是否退出登陆?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          console.log(out)
+          const result = await out();
+          console.log(result);
+          if (result.code === "1") {
+            this.$message({
+              type: "success",
+              message: "退出成功"
+            });
+            this.clearUserInfo();
+            this.$router.replace("/login");
+          } else {
+            this.$message.error("退出失败，请稍后重试");
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出"
+          });
+        });
+    }
   }
 };
 </script>
@@ -38,21 +78,14 @@ export default {
       right: 0;
       height: 100%;
       .header-avater {
-        display: inline-block;
+        float: right;
         margin-right: 10px;
-        position: absolute;
-        top: 50%;
-        right: 80px;
-        transform: translateY(-50%);
+        margin-top: 20px;
       }
       .userName {
-        display: inline-block;
+        float: right;
         margin-right: 25px;
-        width: 60px;
         text-align: right;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowra;
       }
     }
   }

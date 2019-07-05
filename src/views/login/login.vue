@@ -50,31 +50,37 @@ export default {
       const { accountNo, pwd, verifyCode } = this;
       if (!/^1\d{10}$/.test(accountNo)) {
         this.errmsg = "非法手机号";
+        this.$message.error(this.errmsg);
         return;
       }
       if (this.pwd.trim().length < 6 || this.pwd.trim().length > 20) {
         this.errmsg = "密码长度在6至20位";
+        this.$message.error(this.errmsg);
         return;
       }
       const result = await login({
         accountNo: +accountNo,
         pwd: +pwd,
         type: "01",
-	      validCodes: "0000",
-        verifyCode:verifyCode
+        validCodes: "0000",
+        verifyCode: verifyCode
       });
-      console.log(result);
-      // this.setUserInfo({})
-      // this.$router.push('/admin')
+      if (result.code === "1") {
+        this.$message({
+          message: "登陆成功",
+          type: "success"
+        });
+        this.setUserInfo(result.data);
+        this.$router.push("/admin");
+      } else {
+        this.errmsg = result.msg;
+        // this.setUserInfo({name:'你爸爸爸爸爸爸吧',accountNo:'17512088321'});
+        this.$message.error(this.errmsg);
+      }
     },
     VerifyCode() {
-      this.imgurl =
-        "http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode?date=" +
-        Date.now();
-      // this.showimg = false;
-      // getVerifyCode().then(res =>{
-      //   this.showimg = true
-      // });
+      this.imgurl ="http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode?date=" + Date.now();
+      // this.imgurl ="http://localhost:8080/manage-api/api/v1/login/getVerifyCode?date=" + Date.now();
     }
   }
 };

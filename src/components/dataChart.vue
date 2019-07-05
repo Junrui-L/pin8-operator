@@ -5,7 +5,7 @@
       <div class="showtime">{{showTime}}</div>
       <el-button class>后一周</el-button>
       <el-button class>最近一周</el-button>
-      <el-button class>最近一个月</el-button>
+      <!-- <el-button class>最近一个月</el-button>
       <el-button class>最近三个月</el-button>
       <div class="searchTime">
         <div class="title">日期</div>
@@ -13,7 +13,7 @@
         <div class="title">至</div>
         <el-date-picker v-model="endTime" type="date" placeholder="选择日期"></el-date-picker>
         <el-button class="search-button">查询</el-button>
-      </div>
+      </div> -->
     </div>
     <div class="searchResult">
       <div id="trend"></div>
@@ -27,13 +27,14 @@ export default {
   data() {
     return {
       showTime: "06/20/2019 - 06/27/2019",
-      startTime: "",
-      endTime: ""
+      nowTime:new Date(Date.now()).getDay()
+      // startTime: "",
+      // endTime: ""
     };
   },
   mounted() {
     var myChart1 = echarts.init(document.getElementById("trend"));
-    // 绘制图表
+    // 绘制图表1
     myChart1.setOption({
       color: [
         "#8C54FF",
@@ -111,7 +112,7 @@ export default {
       ]
     });
     var myChart2 = echarts.init(document.getElementById("allcount"));
-    // 绘制图表
+    // 绘制图表2
     myChart2.setOption({
       title: {
         text: "数据总量图",
