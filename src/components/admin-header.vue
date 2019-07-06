@@ -40,7 +40,6 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          console.log(out)
           const result = await out();
           console.log(result);
           if (result.code === "1") {

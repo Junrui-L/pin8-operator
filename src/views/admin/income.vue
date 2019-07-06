@@ -6,7 +6,7 @@
     </div>
     <div class="dataAnalyze">
       <span class="title">数据分析图</span>
-      <DataChart></DataChart>
+      <DataChart visit='income'></DataChart>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
         // {title:'新增用户数',count:2,day:-7.6,week:-7.6,month:-7.6},
         // {title:'交易用户数',count:0,day:-7.6,week:-7.6,month:-7.6},
         // {title:'7日未成交用户数',count:423,day:-7.6,week:-7.6,month:-7.6},
-        {},{},{},{},{}
+        // {},{},{},{},{}
       ]
     };
   },
@@ -39,7 +39,7 @@ export default {
          this.$message.error(result.msg);
        }
      }).catch((err) => {
-       console.log(err) 
+       console.log(err)
      });
   }
 };

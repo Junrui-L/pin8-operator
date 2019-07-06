@@ -11,6 +11,10 @@
           <i class="el-icon-top-right" v-if="+this.showData.dailyStatistics >= 0"></i>
           <i class="el-icon-bottom-right" v-else></i>
         </div>
+        <!-- <div
+          class="figure"
+          v-if="this.showData.dailyStatistics === undefined"
+        ></div> -->
         <div
           class="figure"
         >{{+this.showData.dailyStatistics > 0?'+'+this.showData.dailyStatistics+'%':this.showData.dailyStatistics+'%'}}</div>
@@ -21,6 +25,10 @@
           <i class="el-icon-top-right" v-if="+this.showData.weeklyStatistics >= 0"></i>
           <i class="el-icon-bottom-right" v-else></i>
         </div>
+        <!-- <div
+          class="figure"
+          v-if="this.showData.weeklyStatistics === undefined"
+        ></div> -->
         <div
           class="figure"
         >{{+this.showData.weeklyStatistics > 0?'+'+this.showData.weeklyStatistics+'%':this.showData.weeklyStatistics+'%'}}</div>
