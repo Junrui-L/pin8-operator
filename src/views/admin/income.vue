@@ -35,7 +35,9 @@ export default {
      income().then((result) => {
        if(result.code === '1'){
          this.cardData = result.data;
-       }else{
+       }else if(result.code === '10002'){
+         this.$router.push('/login')
+       } else{
          this.$message.error(result.msg);
        }
      }).catch((err) => {
@@ -48,7 +50,7 @@ export default {
 .productData-warp {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  /*overflow: hidden;*/
   display: flex;
   flex-direction: column;
   .yesterday {

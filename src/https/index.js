@@ -18,10 +18,10 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV === 'production') {
   // uat测试服
-  // axios.defaults.baseURL = 'http://pinbauat.cnlaunch.com/'
+  axios.defaults.baseURL = 'http://pinbauat.cnlaunch.com/'
 
   // pinba正式服
-  axios.defaults.baseURL = 'http://pinba.szyrwl.com/'
+  // axios.defaults.baseURL = 'http://pinba.szyrwl.com/'
 
 }
 // if (userStore.get('userInfo')) {

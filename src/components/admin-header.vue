@@ -92,6 +92,7 @@ export default {
     border-left: 1px solid #e4e8f0;
     text-align: center;
     font-size: 24px;
+    cursor: pointer;
     .exit {
       color: #71b43d;
     }

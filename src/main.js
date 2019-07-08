@@ -5,7 +5,8 @@ import App from './App'
 import router from './router/index'
 import store from './store/index';
 import elementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import './assets/css/reset.css'
+import './assets/css/index.css'
 
 Vue.use(elementUI)
 Vue.config.productionTip = false
