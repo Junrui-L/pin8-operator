@@ -31,6 +31,7 @@ import {
   incomeTotalChart
 } from "@/https/api";
 import { dateFormat } from "@/uitls";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -201,6 +202,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["clearUserInfo"]),
     // 更新图表1
     updateRunChart() {
       var myChart1 = echarts.init(document.getElementById("trend"));
@@ -232,6 +234,12 @@ export default {
           this.runOption.series[3] = {name:"订单数量",type:"line",symbolSize:6,data:res.data.orderNum}
         }
         this.updateRunChart();
+      } else {
+        this.$message.error(res.msg);
+          setTimeout(() => {
+            this.clearUserInfo();
+            this.$router.push("/login");
+          }, 500);
       }
     },
     // 处理总量数据
@@ -250,6 +258,12 @@ export default {
         }
 
         this.updateTotalChart();
+      } else {
+        this.$message.error(res.msg);
+          setTimeout(() => {
+            this.clearUserInfo();
+            this.$router.push("/login");
+          }, 500);
       }
     },
     // 获取图表数据

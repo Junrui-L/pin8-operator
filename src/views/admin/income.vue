@@ -14,6 +14,7 @@
 import Card from "../../components/card";
 import DataChart from "../../components/dataChart";
 import { income } from '@/https/api'
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -31,14 +32,22 @@ export default {
     Card,
     DataChart
   },
+   methods: {
+    ...mapActions(["clearUserInfo"])
+  },
    mounted() {
      income().then((result) => {
        if(result.code === '1'){
          this.cardData = result.data;
        }else if(result.code === '10002'){
-         this.$router.push('/login')
+         this.clearUserInfo();
+          this.$router.push("/login");
        } else{
          this.$message.error(result.msg);
+          setTimeout(() => {
+            this.clearUserInfo();
+            this.$router.push("/login");
+          }, 500);
        }
      }).catch((err) => {
        console.log(err)

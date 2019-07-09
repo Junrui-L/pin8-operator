@@ -6,18 +6,19 @@
     </div>
     <div class="dataAnalyze">
       <span class="title">数据分析图</span>
-      <DataChart visit='product'></DataChart>
+      <DataChart visit="product"></DataChart>
     </div>
   </div>
 </template>
 <script>
 import Card from "../../components/card";
 import DataChart from "../../components/dataChart";
-import { product } from '@/https/api'
+import { product } from "@/https/api";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      cardData:[
+      cardData: [
         // {title:'绑定用户数',count:128,day:-7.6,week:-7.6,month:-7.6},
         // {title:'解绑用户数',count:46,day:+2.4,week:+2.4,month:+2.4},
         // {title:'新增用户数',count:2,day:-7.6,week:-7.6,month:-7.6},
@@ -31,18 +32,28 @@ export default {
     Card,
     DataChart
   },
+  methods: {
+    ...mapActions(["clearUserInfo"])
+  },
   mounted() {
-     product().then((result) => {
-       if(result.code === '1'){
-         this.cardData = result.data;
-       }else if(result.code === '10002'){
-         this.$router.push('/login')
-       } else {
-         this.$message.error(result.msg);
-       }
-     }).catch((err) => {
-       console.log(err)
-     });
+    product()
+      .then(result => {
+        if (result.code === "1") {
+          this.cardData = result.data;
+        } else if (result.code === "10002") {
+          this.clearUserInfo();
+          this.$router.push("/login");
+        } else {
+          this.$message.error(result.msg);
+          setTimeout(() => {
+            this.clearUserInfo();
+            this.$router.push("/login");
+          }, 500);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>
@@ -54,9 +65,9 @@ export default {
   display: flex;
   flex-direction: column;
   .yesterday {
-    *zoom:1;
-    &::after{
-      content: '';
+    *zoom: 1;
+    &::after {
+      content: "";
       display: block;
       height: 0;
       visibility: hidden;
