@@ -5,7 +5,7 @@
       <div class="showtime">{{`${startShow} - ${endShow}`}}</div>
       <el-button :class="selectIndex===2?'active':''" v-if="!nextFlag" @click="controlTime(1,2)">后一周</el-button>
       <el-button v-else disabled>后一周</el-button>
-      <el-button :class="selectIndex===3?'active':''" class @click="controlTime(-1,3)">最近一周</el-button>
+      <el-button :class="selectIndex===3?'active':''" class @click="controlTime(2,3)">最近一周</el-button>
       <!-- <el-button class>最近一个月</el-button>
       <el-button class>最近三个月</el-button>
       <div class="searchTime">
@@ -271,6 +271,7 @@ export default {
     },
     //初始化开始结束时间函数，默认上一周
     initTime() {
+      if(this.controlCount === -1) return
       this.controlCount = -1;
       const now = new Date(Date.now());
       // const whatDay = now.getDay();
@@ -299,6 +300,8 @@ export default {
         this.endTime = new Date(endTime.setDate(endTime.getDate() - 7));
         this.controlCount--;
         this.getData();
+      }else if(controlNum === 2){
+        this.initTime()
       }
     }
   }

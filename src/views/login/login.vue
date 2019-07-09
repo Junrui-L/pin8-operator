@@ -58,6 +58,11 @@ export default {
         this.$message.error(this.errmsg);
         return;
       }
+      if (this.verifyCode.trim().length !== 4) {
+        this.errmsg = "请输入正确验证码";
+        this.$message.error(this.errmsg);
+        return;
+      }
       const result = await login({
         accountNo: +accountNo,
         pwd: +pwd,
