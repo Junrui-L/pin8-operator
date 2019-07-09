@@ -1,10 +1,10 @@
 <template>
   <el-container>
-    <el-aside width="200px"><leftNav></leftNav></el-aside>
+    <el-aside><leftNav></leftNav></el-aside>
     <el-container>
-      <el-header height="80px"><adminHeader></adminHeader></el-header>
+      <el-header><adminHeader></adminHeader></el-header>
       <el-main><router-view></router-view></el-main>
-      <el-footer height="60px"><adminFooter></adminFooter></el-footer>
+      <el-footer><adminFooter></adminFooter></el-footer>
     </el-container>
   </el-container>
 </template>
@@ -34,13 +34,19 @@ export default {
 .el-container{
   height: 100%;
 }
-.el-header,
+.el-header {
+  background-color: #fff;
+  color: #2E384D;
+  padding:0;
+  height: 80px;
+}
 .el-footer {
   background-color: #fff;
   color: #2E384D;
   padding:0;
+  height: 60px;
   // text-align: center;
-  // line-height: 60px;
+  line-height: 60px;
 }
 .el-footer{
     padding:0 20px;
@@ -49,6 +55,7 @@ export default {
   background-color: #2E384D;
   color: #fff;
   text-align: center;
+  widows: 200px;
   // line-height: 200px;
 }
 

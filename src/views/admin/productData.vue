@@ -45,10 +45,10 @@ export default {
           this.$router.push("/login");
         } else {
           this.$message.error(result.msg);
-          setTimeout(() => {
-            this.clearUserInfo();
-            this.$router.push("/login");
-          }, 500);
+          // setTimeout(() => {
+          //   this.clearUserInfo();
+          //   this.$router.push("/login");
+          // }, 500);
         }
       })
       .catch(err => {

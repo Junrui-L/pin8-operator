@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import echarts from "@/lib/echarts";
+import echarts from "echarts";
 import {
   productRunChart,
   productTotalChart,
@@ -66,7 +66,7 @@ export default {
           text: "数据增量走势图",
           textStyle: {
             color: "#8798AD",
-            fontSize: 16
+            fontSize: '100%'
           }
         },
         legend: {
@@ -76,7 +76,8 @@ export default {
           ],
           left: "right",
           textStyle: {
-            color: "#8798AD"
+            color: "#8798AD",
+            fontSize :  '100%'
           },
           inactiveColor: "#333"
         },
@@ -236,10 +237,10 @@ export default {
         this.updateRunChart();
       } else {
         this.$message.error(res.msg);
-          setTimeout(() => {
-            this.clearUserInfo();
-            this.$router.push("/login");
-          }, 500);
+          // setTimeout(() => {
+          //   this.clearUserInfo();
+          //   this.$router.push("/login");
+          // }, 500);
       }
     },
     // 处理总量数据
@@ -260,10 +261,10 @@ export default {
         this.updateTotalChart();
       } else {
         this.$message.error(res.msg);
-          setTimeout(() => {
-            this.clearUserInfo();
-            this.$router.push("/login");
-          }, 500);
+          // setTimeout(() => {
+          //   this.clearUserInfo();
+          //   this.$router.push("/login");
+          // }, 500);
       }
     },
     // 获取图表数据

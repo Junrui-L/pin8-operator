@@ -13,18 +13,24 @@
       text-color="#B0BAC9"
       active-text-color="#fff"
     >
-      <el-menu-item index="/operation">
-        <i class="el-icon-setting"></i>
-        <span slot="title">运营管理</span>
-      </el-menu-item>
-      <el-menu-item index="/productData">
-        <i class="el-icon-menu"></i>
-        <span slot="title">产品数据分析</span>
-      </el-menu-item>
-      <el-menu-item index="/income">
-        <i class="el-icon-s-data"></i>
-        <span slot="title">收入分析</span>
-      </el-menu-item>
+      <el-submenu index="/operation">
+        <template>
+          <span slot="title">
+            <i class="el-icon-setting"></i>运营管理
+          </span>
+        </template>
+        <!-- <template slot="title">分组一</template> -->
+        <el-menu-item index="/productData">
+          <span slot="title">
+            <i class="el-icon-menu"></i>产品数据分析
+          </span>
+        </el-menu-item>
+        <el-menu-item index="/income">
+          <span slot="title">
+            <i class="el-icon-s-data"></i>收入分析
+          </span>
+        </el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -36,8 +42,8 @@ export default {
         "https://lanhu.oss-cn-beijing.aliyuncs.com/SketchSlicePng50b513dcda8961df336cbfb339f04713"
     };
   },
-  mounted () {
-      this.handleSelect('/productData');
+  mounted() {
+    this.handleSelect("/productData");
   },
   methods: {
     handleSelect(index) {
@@ -70,15 +76,24 @@ export default {
     background: #2e384d;
   }
   .el-menu-item {
-    border-left: 3px solid rgba(110, 178, 57, 0);
-    text-align: initial;
+    // border-left: 3px solid rgba(110, 178, 57, 0);
+    // text-align: initial;
+    background: rgb(60, 75, 105);
   }
   .el-menu-item:hover {
-    background: rgba(135, 152, 173, 0.1);
+    background: rgba(60, 75, 105, 0.5);
+  }
+  // .el-submenu:hover {
+    // background: rgba(135, 152, 173, 0.1);
+  // }
+  .el-menu-item-group {
+    .el-menu-item-group__title {
+      height: 0px;
+    }
   }
   .is-active {
-    background: rgba(135, 152, 173, 0.1);
-    border-left: 3px solid rgb(110, 178, 57);
+    // background: rgba(135, 152, 173, 0.1);
+    // border-left: 3px solid rgb(110, 178, 57);
   }
 }
 </style>
