@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import echarts from "echarts";
+import echarts from "@/lib/echarts";
 import {
   productRunChart,
   productTotalChart,
