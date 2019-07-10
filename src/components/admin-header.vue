@@ -4,16 +4,16 @@
       <div class="user-msg">
         <div
           class="userName"
-          style="line-height:80px"
+          style="line-height: 60px;"
           v-if="userInfo"
         >{{userInfo.name === null?userInfo.accountNo:userInfo.name}}</div>
-        <div class="header-avater">
+        <div class="header-avater" style="margin-top: 10px;">
           <el-avatar class="avater-img" :size="40" :src="circleUrl"></el-avatar>
         </div>
       </div>
     </div>
-    <div class="header-exit" @click="toexit" style="height:80px;width:80px;">
-      <i class="el-icon-switch-button exit" style="line-height:80px;"></i>
+    <div class="header-exit" style="width:60px;height:60px" @click="toexit">
+      <i class="el-icon-switch-button exit" style="line-height:60px"></i>
     </div>
   </div>
 </template>
@@ -79,12 +79,12 @@ export default {
       .header-avater {
         float: right;
         margin-right: 10px;
-        margin-top: 20px;
       }
       .userName {
         float: right;
         margin-right: 25px;
         text-align: right;
+        font-size: 14px;
       }
     }
   }
@@ -93,6 +93,8 @@ export default {
     text-align: center;
     font-size: 24px;
     cursor: pointer;
+    // height: 60px;
+    // width: 60px;
     .exit {
       color: #71b43d;
     }

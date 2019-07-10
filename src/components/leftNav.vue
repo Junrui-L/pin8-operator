@@ -73,23 +73,23 @@ export default {
   }
   .el-menu {
     border: none;
+    text-align: initial;
     background: #2e384d;
   }
+  .el-submenu__title{
+    text-align: initial;
+  }
   .el-menu-item {
-    // border-left: 3px solid rgba(110, 178, 57, 0);
-    // text-align: initial;
+    border-left: 3px solid rgba(110, 178, 57, 0);
+    text-align: initial;
     background: rgb(60, 75, 105);
   }
   .el-menu-item:hover {
     background: rgba(60, 75, 105, 0.5);
+    border-left: 3px solid rgba(110, 178, 57, 1);
   }
-  // .el-submenu:hover {
-    // background: rgba(135, 152, 173, 0.1);
-  // }
-  .el-menu-item-group {
-    .el-menu-item-group__title {
-      height: 0px;
-    }
+  .el-menu-item.is-active{
+    border-left: 3px solid rgba(110, 178, 57, 1);
   }
   .is-active {
     // background: rgba(135, 152, 173, 0.1);

@@ -39,6 +39,7 @@ export default {
   color: #2E384D;
   padding:0;
   height: 80px;
+  // line-height: 80px;
 }
 .el-footer {
   background-color: #fff;
@@ -55,7 +56,7 @@ export default {
   background-color: #2E384D;
   color: #fff;
   text-align: center;
-  widows: 200px;
+  // width: 200px;
   // line-height: 200px;
 }
 

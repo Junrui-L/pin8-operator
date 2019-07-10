@@ -66,7 +66,7 @@ export default {
           text: "数据增量走势图",
           textStyle: {
             color: "#8798AD",
-            fontSize: '100%'
+            fontSize: "100%"
           }
         },
         legend: {
@@ -77,7 +77,7 @@ export default {
           left: "right",
           textStyle: {
             color: "#8798AD",
-            fontSize :  '100%'
+            fontSize: "70%"
           },
           inactiveColor: "#333"
         },
@@ -130,7 +130,7 @@ export default {
           text: "数据总量图",
           textStyle: {
             color: "#8798AD",
-            fontSize: 16
+            fontSize: "100%"
           }
         },
         dataset: {
@@ -185,6 +185,15 @@ export default {
   props: ["visit"],
   mounted() {
     this.initTime();
+    // this.updateRunChart();
+    // this.updateTotalChart();
+    // 设置echarts 根据桌面的尺寸进行调整
+    var myChart1 = echarts.init(document.getElementById("trend"));
+    var myChart2 = echarts.init(document.getElementById("allcount"));
+    window.onresize = function() {
+      myChart1.resize();
+      myChart2.resize();
+    };
   },
   computed: {
     nextFlag() {
@@ -220,27 +229,60 @@ export default {
       if (res.code === "1") {
         this.runOption.xAxis.data = res.data.dates;
         if (this.visit === "product") {
-          this.runOption.legend.data[0] = {name:"新增用户",icon:"circle"}
-          this.runOption.series[0] = {name:"新增用户",type:"line",symbolSize:6,data:res.data.addUserNum}
-          this.runOption.legend.data[1] = {name:"解绑用户",icon:"circle"}
-          this.runOption.series[1] = {name:"解绑用户",type:"line",symbolSize:6,data:res.data.unbindNum}
+          this.runOption.legend.data[0] = { name: "新增用户", icon: "circle" };
+          this.runOption.series[0] = {
+            name: "新增用户",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.addUserNum
+          };
+          this.runOption.legend.data[1] = { name: "解绑用户", icon: "circle" };
+          this.runOption.series[1] = {
+            name: "解绑用户",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.unbindNum
+          };
         } else if (this.visit === "income") {
-          this.runOption.legend.data[0] = {name:"平台收入",icon:"circle"}
-          this.runOption.series[0] = {name:"平台收入",type:"line",symbolSize:6,data:res.data.incomeNum}
-          this.runOption.legend.data[1] = {name:"拉新支出",icon:"circle"}
-          this.runOption.series[1] = {name:"拉新支出",type:"line",symbolSize:6,data:res.data.inviteNum}
-          this.runOption.legend.data[2] = {name:"平台净收入",icon:"circle"}
-          this.runOption.series[2] = {name:"平台净收入",type:"line",symbolSize:6,data:res.data.netIncomNum}
-          this.runOption.legend.data[3] = {name:"订单数量",icon:"circle"}
-          this.runOption.series[3] = {name:"订单数量",type:"line",symbolSize:6,data:res.data.orderNum}
+          this.runOption.legend.data[0] = { name: "平台收入", icon: "circle" };
+          this.runOption.series[0] = {
+            name: "平台收入",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.incomeNum
+          };
+          this.runOption.legend.data[1] = { name: "拉新支出", icon: "circle" };
+          this.runOption.series[1] = {
+            name: "拉新支出",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.inviteNum
+          };
+          this.runOption.legend.data[2] = {
+            name: "平台净收入",
+            icon: "circle"
+          };
+          this.runOption.series[2] = {
+            name: "平台净收入",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.netIncomNum
+          };
+          this.runOption.legend.data[3] = { name: "订单数量", icon: "circle" };
+          this.runOption.series[3] = {
+            name: "订单数量",
+            type: "line",
+            symbolSize: 6,
+            data: res.data.orderNum
+          };
         }
         this.updateRunChart();
       } else {
         this.$message.error(res.msg);
-          setTimeout(() => {
-            this.clearUserInfo();
-            this.$router.push("/login");
-          }, 500);
+        setTimeout(() => {
+          this.clearUserInfo();
+          this.$router.push("/login");
+        }, 500);
       }
     },
     // 处理总量数据
@@ -248,23 +290,38 @@ export default {
       // console.log(res)
       if (res.code === "1") {
         if (this.visit === "product") {
-          this.TotalOption.dataset.source[0] = [+res.data.transferNum,"交易用户数"];
-          this.TotalOption.dataset.source[1] = [+res.data.bingNum,"绑定用户数"];
-          this.TotalOption.dataset.source[2] = [+res.data.addNum,"新增用户数"];
+          this.TotalOption.dataset.source[0] = [
+            +res.data.transferNum,
+            "交易用户数"
+          ];
+          this.TotalOption.dataset.source[1] = [
+            +res.data.bingNum,
+            "绑定用户数"
+          ];
+          this.TotalOption.dataset.source[2] = [+res.data.addNum, "新增用户数"];
         } else if (this.visit === "income") {
-          this.TotalOption.dataset.source[3] = [+res.data.incomeNum,"平台收入"];
-          this.TotalOption.dataset.source[2] = [+res.data.inviteNum,"拉新支出"];
-          this.TotalOption.dataset.source[1] = [+res.data.netIncomNum,"平台净收入"];
-          this.TotalOption.dataset.source[0] = [+res.data.orderNum,"订单数量"];
+          this.TotalOption.dataset.source[3] = [
+            +res.data.incomeNum,
+            "平台收入"
+          ];
+          this.TotalOption.dataset.source[2] = [
+            +res.data.inviteNum,
+            "拉新支出"
+          ];
+          this.TotalOption.dataset.source[1] = [
+            +res.data.netIncomNum,
+            "平台净收入"
+          ];
+          this.TotalOption.dataset.source[0] = [+res.data.orderNum, "订单数量"];
         }
 
         this.updateTotalChart();
       } else {
         this.$message.error(res.msg);
-          setTimeout(() => {
-            this.clearUserInfo();
-            this.$router.push("/login");
-          }, 500);
+        // setTimeout(() => {
+        //   this.clearUserInfo();
+        //   this.$router.push("/login");
+        // }, 500);
       }
     },
     // 获取图表数据
@@ -286,7 +343,7 @@ export default {
     },
     //初始化开始结束时间函数，默认上一周
     initTime() {
-      if(this.controlCount === -1) return
+      if (this.controlCount === -1) return;
       this.controlCount = -1;
       const now = new Date(Date.now());
       // const whatDay = now.getDay();
@@ -315,8 +372,8 @@ export default {
         this.endTime = new Date(endTime.setDate(endTime.getDate() - 7));
         this.controlCount--;
         this.getData();
-      }else if(controlNum === 2){
-        this.initTime()
+      } else if (controlNum === 2) {
+        this.initTime();
       }
     }
   }
