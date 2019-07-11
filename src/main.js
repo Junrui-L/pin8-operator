@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router/index'
 import store from './store/index';
-import {Button,Input,Container,Aside,Header,Main,Footer,Message,Avatar,Menu,MenuItem,Submenu,MessageBox} from 'element-ui'
+import {Button,Input,Container,Aside,Header,Main,Footer,Message,Avatar,Menu,MenuItem,Submenu,MessageBox,Select,Option,DatePicker,Card,Table,TableColumn} from 'element-ui'
 import './assets/css/reset.css'
 import './assets/css/index.css'
 
@@ -19,6 +19,12 @@ Vue.use(Avatar)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Submenu)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(DatePicker)
+Vue.use(Card)
+Vue.use(Table)
+Vue.use(TableColumn)
 Vue.config.productionTip = false
 
 Vue.prototype.$message = Message;

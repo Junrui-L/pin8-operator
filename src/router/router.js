@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'admin',  //操作首页
-      component: () => import(/* webpackChunkName: "adminIndex" */ '../views/admin/adminIndex.vue'),
+      component: () => import(/* webpackChunkName: "admin" */ '../views/admin/adminIndex.vue'),
     },
     {
       path: '/admin',
@@ -21,21 +21,26 @@ export default new Router({
           component: () => import(/* webpackChunkName: "income" */ '../views/admin/income.vue'),
         },
         {
-          path: '/operation',
-          name: 'operation',  //运营管理
-          component: () => import(/* webpackChunkName: "operation" */ '../views/admin/operation.vue'),
-        },
-        {
           path: '/productData',
           name: 'productData',  //产品数据分析
           component: () => import(/* webpackChunkName: "productData" */ '../views/admin/productData.vue'),
+        },
+        {
+          path: '/auditDispose',
+          name: 'auditDispose',  //审核处理
+          component: () => import(/* webpackChunkName: "auditDispose" */ '../views/admin/auditDispose.vue'),
+        },
+        {
+          path: '/auditInquire',
+          name: 'auditInquire',  //审核查询
+          component: () => import(/* webpackChunkName: "auditInquire" */ '../views/admin/auditInquire.vue'),
         },
       ]
     },
     {
       path: '/login',
       name: 'login',  //操作首页
-      component: () => import(/* webpackChunkName: "adminIndex" */ '../views/login/login.vue'),
+      component: () => import(/* webpackChunkName: "login" */ '../views/login/login.vue'),
     }
   ]
 })

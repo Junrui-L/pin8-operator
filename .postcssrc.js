@@ -22,7 +22,9 @@ module.exports = {
       mediaQuery: false,
       exclude: /(\/|\\)(node_cmodules)(\/|\\)/
     },
-    "postcss-viewport-units": {},
+    "postcss-viewport-units": {
+      filterRule: rule => rule.selector.indexOf('::after') === -1 && rule.selector.indexOf('::before') === -1 && rule.selector.indexOf(':after') === -1 && rule.selector.indexOf(':before') === -1
+    },
     cssnano: { // 压缩清理css
       "cssnano-preset-advanced": {
         zindex: false,

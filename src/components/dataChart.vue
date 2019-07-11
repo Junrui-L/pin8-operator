@@ -279,10 +279,10 @@ export default {
         this.updateRunChart();
       } else {
         this.$message.error(res.msg);
-        setTimeout(() => {
-          this.clearUserInfo();
-          this.$router.push("/login");
-        }, 500);
+        // setTimeout(() => {
+        //   this.clearUserInfo();
+        //   this.$router.push("/login");
+        // }, 500);
       }
     },
     // 处理总量数据

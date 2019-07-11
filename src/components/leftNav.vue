@@ -6,8 +6,9 @@
     </div>
     <!-- @open="handleOpen" -->
     <!-- @close="handleClose" -->
+    <!-- default-active="/productData" -->
     <el-menu
-      default-active="/productData"
+      default-active="/auditDispose"
       class="el-menu-vertical-demo"
       @select="handleSelect"
       text-color="#B0BAC9"
@@ -31,6 +32,23 @@
           </span>
         </el-menu-item>
       </el-submenu>
+      <el-submenu index="/audit">
+        <template>
+          <span slot="title">
+            <i class="el-icon-setting"></i>审核管理
+          </span>
+        </template>
+        <el-menu-item index="/auditDispose">
+          <span slot="title">
+            <i class="el-icon-menu"></i>审核处理
+          </span>
+        </el-menu-item>
+        <el-menu-item index="/auditInquire">
+          <span slot="title">
+            <i class="el-icon-s-data"></i>审核查询
+          </span>
+        </el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -43,7 +61,8 @@ export default {
     };
   },
   mounted() {
-    this.handleSelect("/productData");
+    // this.handleSelect("/productData");
+    this.handleSelect("/auditDispose");
   },
   methods: {
     handleSelect(index) {
@@ -76,7 +95,7 @@ export default {
     text-align: initial;
     background: #2e384d;
   }
-  .el-submenu__title{
+  .el-submenu__title {
     text-align: initial;
   }
   .el-menu-item {
@@ -88,7 +107,7 @@ export default {
     background: rgba(60, 75, 105, 0.5);
     border-left: 3px solid rgba(110, 178, 57, 1);
   }
-  .el-menu-item.is-active{
+  .el-menu-item.is-active {
     border-left: 3px solid rgba(110, 178, 57, 1);
   }
   .is-active {

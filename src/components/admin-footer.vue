@@ -17,6 +17,7 @@ export default {
     download() {
       var canvas1 = document.querySelector("#trend > div > canvas");
       var canvas2 = document.querySelector("#allcount > div > canvas");
+      if(canvas1 === null || canvas2 === null ) return
       let type = "png"; //设置下载图片的格式
 
       let img_png_src1 = canvas1.toDataURL("image/png"); //将canvas保存为图片
