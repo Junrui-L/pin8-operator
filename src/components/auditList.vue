@@ -47,7 +47,13 @@
         </div>
       </div>
       <div class="main">
-        <el-table :data="tableData" border style="width: 100%">
+        <el-table
+          :data="tableData"
+          @row-click="headleClick"
+          height="550"
+          border
+          style="width: 100%"
+        >
           <!-- width=170  -->
           <el-table-column
             v-for="(item,index) in columnList"
@@ -129,6 +135,16 @@ export default {
         ];
       }
       return columnlist;
+    }
+  },
+  methods: {
+    headleClick(row) {
+      // console.log(row);
+      if (this.model === "dispose") {
+        this.$router.push("auditDetails?model=dispose");
+      } else if (this.model === "inquire") {
+        this.$router.push("auditDetails?model=inquire");
+      }
     }
   }
 };
