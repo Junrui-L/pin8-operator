@@ -26,7 +26,7 @@
         <div class="bottom">
           <div class="condition-item">
             <div class="condition-title">车牌号</div>
-            <el-input class="input" v-model="plate" placeholder="请输入车牌号"></el-input>
+            <el-input class="input" v-model="carNo" placeholder="请输入车牌号"></el-input>
           </div>
           <div class="condition-item">
             <div class="condition-title">时间范围</div>
@@ -34,15 +34,15 @@
               v-model="timevalue"
               type="daterange"
               format="yyyy 年 MM 月 dd 日"
-              value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd HH:mm:ss"
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
             ></el-date-picker>
           </div>
           <div class="condition-item">
-            <el-button>查询</el-button>
-            <el-button>重置</el-button>
+            <el-button @click="handleInquire">查询</el-button>
+            <el-button @click="handleReset">重置</el-button>
           </div>
         </div>
       </div>
@@ -62,17 +62,25 @@
             :label="item.label"
           ></el-table-column>
         </el-table>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="size"
+          :total="total"
+          @current-change="handleInquire"
+        ></el-pagination>
       </div>
     </el-card>
   </div>
 </template>
 <script>
+import { getMissionListByPage, getHistoryMissionListByPage } from "@/https/api";
 export default {
   data() {
     return {
       phone: "",
       name: "",
-      plate: "",
+      carNo: "",
       options: [
         {
           value: "1",
@@ -85,23 +93,18 @@ export default {
         {
           value: "3",
           label: "驳回"
+        },
+        {
+          value: "4",
+          label: "审核拒绝"
         }
       ],
-      value: "",
+      value: "1",
       timevalue: "",
-      tableData: [
-        {
-          number: "1",
-          taskNo: "A12002",
-          name: "张三",
-          phone: "13800013800",
-          plate: "京A0000",
-          applyDate: "2019-7-11 08:30",
-          flag: "审核",
-          auditPersonn: "1659956265",
-          auditTime: "2019-7-11 11:30"
-        }
-      ]
+      tableData: [],
+      total: 100,
+      size: 8,
+      current: 1 //当前页数
     };
   },
   props: ["model"],
@@ -113,24 +116,24 @@ export default {
       let columnlist = [];
       if (this.model === "dispose") {
         columnlist = [
-          { prop: "number", label: "序号" },
-          { prop: "taskNo", label: "任务编号" },
-          { prop: "name", label: "姓名" },
-          { prop: "phone", label: "手机号" },
-          { prop: "plate", label: "车牌号" },
-          { prop: "applyDate", label: "申请日期" },
-          { prop: "flag", label: "状态" }
+          { prop: "id", label: "序号" },
+          { prop: "missionId", label: "任务编号" },
+          { prop: "auditName", label: "姓名" },
+          { prop: "auditMobile", label: "手机号" },
+          { prop: "carNo", label: "车牌号" },
+          { prop: "applyTime", label: "申请日期" },
+          { prop: "auditStatus", label: "状态" }
         ];
       } else if (this.model === "inquire") {
         columnlist = [
-          { prop: "number", label: "序号" },
-          { prop: "taskNo", label: "任务编号" },
-          { prop: "name", label: "姓名" },
-          { prop: "phone", label: "手机号" },
-          { prop: "plate", label: "车牌号" },
-          { prop: "applyDate", label: "申请日期" },
-          { prop: "flag", label: "状态" },
-          { prop: "auditPersonn", label: "审核人员" },
+          { prop: "id", label: "序号" },
+          { prop: "missionId", label: "任务编号" },
+          { prop: "auditName", label: "姓名" },
+          { prop: "auditMobile", label: "手机号" },
+          { prop: "carNo", label: "车牌号" },
+          { prop: "applyTime", label: "申请日期" },
+          { prop: "auditStatus", label: "状态" },
+          { prop: "auditBy", label: "审核人员" },
           { prop: "auditTime", label: "审核时间" }
         ];
       }
@@ -138,6 +141,7 @@ export default {
     }
   },
   methods: {
+    // 列表点击其中一行
     headleClick(row) {
       // console.log(row);
       if (this.model === "dispose") {
@@ -145,6 +149,95 @@ export default {
       } else if (this.model === "inquire") {
         this.$router.push("auditDetails?model=inquire");
       }
+    },
+    // 获取数据
+    handleInquire(no) {
+      if (typeof no === "object") {
+        // 代表点击查询获取数据
+        this.current = 1;
+      } else if (typeof no === "number") {
+        // 代表改变页数获取数据
+        this.current = no;
+      }
+      const { model } = this;
+      if (model === "dispose") {
+        getMissionListByPage({
+          auditStatus: 1,
+          carNo: this.carNo,
+          current: this.current,
+          endTime: this.timevalue[0],
+          mobile: this.phone,
+          name: this.name,
+          size: this.size,
+          startTime: this.timevalue[1]
+        }).then(res => {
+          if (res.code === "1") {
+            console.log(res.data);
+            this.total = res.data.total;
+            this.tableData = res.data.records.map(item => {
+              // {
+              // { prop: "id", label: "序号" },
+              // { prop: "missionId", label: "任务编号" },
+              // { prop: "auditName", label: "姓名" },
+              // { prop: "auditMobile", label: "手机号" },
+              // { prop: "carNo", label: "车牌号" },
+              // { prop: "applyTime", label: "申请日期" },
+              // { prop: "auditStatus", label: "状态" }
+              // }
+
+              // {
+              // accountNo: "13316595376"
+              // applyTime: "2019-07-15T19:49:02.000+0000"
+              // auditBy: null
+              // auditMobile: "手机号"
+              // auditName: "姓名"
+              // auditStatus: 1
+              // auditTime: null
+              // carNo: "车牌号"
+              // drivingLicenseUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
+              // drivingPermitUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
+              // id: 3
+              // identityNo: "身份证号"
+              // missionId: "M201907151449023819"
+              // qualificationCertificateUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
+              // rejectReason: null
+              // userIdentifyUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
+              //               }
+              return {
+                id: item.id,
+                missionId: item.missionId,
+                auditName: item.auditName,
+                auditMobile: item.auditMobile,
+                carNo: item.carNo,
+                applyTime: item.applyTime,
+                auditStatus: item.auditStatus
+              };
+            });
+          }
+        });
+      } else if (model === "inquire") {
+        getHistoryMissionListByPage({
+          auditStatus: 1,
+          carNo: this.carNo,
+          current: this.current,
+          endTime: this.timevalue[0],
+          mobile: this.phone,
+          name: this.name,
+          size: this.size,
+          startTime: this.timevalue[1]
+        }).then(res => {
+          if (res.code === "1") {
+            console.log(res.data);
+            this.total = res.data.total;
+          }
+        });
+      }
+    },
+    handleReset() {
+      this.phone = "";
+      this.name = "";
+      this.carNo = "";
+      (this.value = "1"), (this.timevalue = "");
     }
   }
 };
@@ -200,7 +293,8 @@ export default {
         }
       }
     }
-    .main {
+    .el-pagination {
+      float: right;
     }
   }
 }

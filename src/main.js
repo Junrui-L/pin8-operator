@@ -4,9 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router/index'
 import store from './store/index';
-import {Button,Input,Container,Aside,Header,Main,Footer,Message,Avatar,Menu,MenuItem,Submenu,MessageBox,Select,Option,DatePicker,Card,Table,TableColumn,Image} from 'element-ui'
+import { Button, Input, Container, Aside, Header, Main, Footer, Message, Avatar, Menu, MenuItem, Submenu, MessageBox, Select, Option, DatePicker, Card, Table, TableColumn, Image, CheckboxGroup, Checkbox, Pagination } from 'element-ui'
 import './assets/css/reset.css'
 import './assets/css/index.css'
+import 'default-passive-events'
 
 Vue.use(Button)
 Vue.use(Input)
@@ -26,6 +27,9 @@ Vue.use(Card)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Image)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
+Vue.use(Pagination)
 Vue.config.productionTip = false
 
 Vue.prototype.$message = Message;

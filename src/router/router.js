@@ -39,6 +39,11 @@ export default new Router({
           path: '/auditDetails',
           name: 'auditDetails',  //审核查询
           component: () => import(/* webpackChunkName: "auditDetails" */ '../components/auditDetails.vue'),
+        },
+        {
+          path: '/auditRject',
+          name: 'auditRject',  //审核查询
+          component: () => import(/* webpackChunkName: "auditRject" */ '../components/auditRject.vue'),
         }
       ]
     },

@@ -32,7 +32,8 @@
       <div class="footer">
         <div v-if="model === 'dispose'" class="dispose">
           <el-button @click="auditPass">审核通过</el-button>
-          <el-button @click="auditReject">驳回</el-button>
+          <el-button @click="auditReject('rurn')">驳回</el-button>
+          <el-button @click="auditReject('reject')">审核拒绝</el-button>
         </div>
         <div v-else-if="model === 'inquire'" class="inquire">
           <div class="inquire-top">
@@ -52,7 +53,8 @@ export default {
   data() {
     return {
       name: "张三",
-      idNo: "440859326548665875"
+      idNo: "440859326548665875",
+      checkList: []
     };
   },
   computed: {
@@ -69,7 +71,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-        center:true
+        center: true
       })
         .then(() => {
           this.$message({
@@ -84,8 +86,8 @@ export default {
           });
         });
     },
-    auditReject() {
-      console.log("out");
+    auditReject(model) {
+      this.$router.push(`auditRject?model=${model}`)
     }
   }
 };

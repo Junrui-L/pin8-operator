@@ -79,12 +79,17 @@ export default {
         this.$router.push("/admin");
       } else {
         this.errmsg = result.msg;
-        // this.setUserInfo({name:'你爸爸爸爸爸爸吧',accountNo:'17512088321'});
         this.$message.error(this.errmsg);
       }
+      // this.setUserInfo({
+      //   name: "你爸爸爸爸爸爸吧",
+      //   accountNo: "17512088321"
+      // });
     },
     VerifyCode() {
-      this.imgurl ="http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode?date=" + Date.now();
+      this.imgurl =
+        "http://pinbauat.cnlaunch.com/manage-api/api/v1/login/getVerifyCode?date=" +
+        Date.now();
       // this.imgurl ="http://localhost:8080/manage-api/api/v1/login/getVerifyCode?date=" + Date.now();
     }
   }

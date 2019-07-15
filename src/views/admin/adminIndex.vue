@@ -63,7 +63,7 @@ export default {
 .el-main {
   background-color: #f8f8f8;
   color: #333;
-  // overflow: auto;
+  // overflow: hidden;
   // text-align: center;
   // line-height: 160px;
 }
