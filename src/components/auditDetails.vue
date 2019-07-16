@@ -8,25 +8,13 @@
         </div>
         <div class="showItem">
           <div class="title">身份证号</div>
-          <div class="msg">{{idNo}}</div>
+          <div class="msg">{{identityNo}}</div>
         </div>
       </div>
-      <div class="main">
-        <div class="image-item">
-          <div class="image-title">驾驶证</div>
-          <el-image></el-image>
-        </div>
-        <div class="image-item">
-          <div class="image-title">从业资格证</div>
-          <el-image></el-image>
-        </div>
-        <div class="image-item">
-          <div class="image-title">行驶证</div>
-          <el-image></el-image>
-        </div>
-        <div class="image-item">
-          <div class="image-title">人车合影</div>
-          <el-image></el-image>
+      <div class="main" v-if="imageMag.length !== 0">
+        <div class="image-item" v-for="(item,index) in imageMag" :key="index">
+          <div class="image-title">{{item.title}}</div>
+          <el-image :src="item.src"></el-image>
         </div>
       </div>
       <div class="footer">
@@ -35,12 +23,19 @@
           <el-button @click="auditReject('rurn')">驳回</el-button>
           <el-button @click="auditReject('reject')">审核拒绝</el-button>
         </div>
-        <div v-else-if="model === 'inquire'" class="inquire">
+        <div v-else-if="model === 'inquire' && auditFlag !== 2" class="inquire">
           <div class="inquire-top">
-            <div class="inquire-title">驳回原因</div>
-            <div class="inquire-show">图片不清晰</div>
+            <div class="inquire-title">{{auditText}}原因</div>
+            <div class="inquire-show">
+              <p v-for="(item,index) in rejectReason" :key="index">{{item}}</p>
+            </div>
           </div>
           <div class="inquire-bottom">
+            <el-button @click="()=>$router.back()">返回</el-button>
+          </div>
+        </div>
+        <div v-else-if="model === 'inquire' && auditFlag === 2" class="inquire">
+          <div class="inquire-bottom flag2">
             <el-button @click="()=>$router.back()">返回</el-button>
           </div>
         </div>
@@ -49,21 +44,59 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import { auditMission, getMissionDetail } from "@/https/api";
 export default {
   data() {
     return {
       name: "张三",
-      idNo: "440859326548665875",
-      checkList: []
+      identityNo: "440859326548665875",
+      imageMag: [],
+      auditFlag: 0,
+      auditText: "",
+      rejectReason:''
     };
   },
   computed: {
+    ...mapGetters(["selectAuditId"]),
     model() {
       return this.$route.query.model;
     }
   },
+  watch: {
+    auditFlag(newval) {
+      if (newval === 3) {
+        this.auditText = "驳回";
+      } else if (newval === 4) {
+        this.auditText = "拒绝";
+      }
+    }
+  },
   mounted() {
-    // console.log(this.$route.query.model);
+    getMissionDetail({
+      missionId: this.selectAuditId
+    }).then(res => {
+      if (res.code === "1") {
+        console.log(res.data);
+        this.name = res.data.auditName;
+        this.identityNo = res.data.identityNo;
+        this.imageMag.push({
+          title: "驾驶证",
+          src: res.data.drivingLicenseUrl
+        });
+        this.imageMag.push({
+          title: "从业资格证",
+          src: res.data.qualificationCertificateUrl
+        });
+        this.imageMag.push({ title: "行驶证", src: res.data.drivingPermitUrl });
+        this.imageMag.push({
+          title: "人车合影",
+          src: res.data.userIdentifyUrl
+        });
+        this.auditFlag = res.data.auditStatus;
+        this.rejectReason = res.data.rejectReason.split(';');
+      }
+    });
   },
   methods: {
     auditPass() {
@@ -74,9 +107,23 @@ export default {
         center: true
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "审核通过"
+          auditMission({
+            missionId: this.selectAuditId,
+            auditStatus: 2,
+            rejectReason: null
+          }).then(res => {
+            if (res.code === "1") {
+              this.$message({
+                type: "success",
+                message: "审核通过"
+              });
+              this.$router.back();
+            } else {
+              this.$message({
+                type: "info",
+                message: res.msg
+              });
+            }
           });
         })
         .catch(() => {
@@ -87,7 +134,7 @@ export default {
         });
     },
     auditReject(model) {
-      this.$router.push(`auditRject?model=${model}`)
+      this.$router.push(`auditRject?model=${model}`);
     }
   }
 };
@@ -129,7 +176,7 @@ export default {
           font-size: 20px;
         }
         .el-image {
-          width: 180px;
+          width: 288px;
           height: 180px;
         }
       }
@@ -167,6 +214,7 @@ export default {
             color: #2f444e;
           }
           .inquire-show {
+            overflow: auto;
             display: inline-block;
             // background: green;
             padding: 10px;
@@ -180,6 +228,9 @@ export default {
         .inquire-bottom {
           text-align: center;
           height: 40px;
+          &.flag2 {
+            margin-top: 50px;
+          }
         }
       }
     }

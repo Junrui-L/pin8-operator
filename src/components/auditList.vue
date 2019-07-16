@@ -75,6 +75,8 @@
 </template>
 <script>
 import { getMissionListByPage, getHistoryMissionListByPage } from "@/https/api";
+import { dateFormat } from "@/uitls";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -102,14 +104,14 @@ export default {
       value: "1",
       timevalue: "",
       tableData: [],
-      total: 100,
+      total: 1,
       size: 8,
       current: 1 //当前页数
     };
   },
   props: ["model"],
   mounted() {
-    // console.log(this.model);
+    this.handleInquire(1)
   },
   computed: {
     columnList() {
@@ -141,12 +143,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setSelectAuditId"]),
     // 列表点击其中一行
     headleClick(row) {
-      // console.log(row);
       if (this.model === "dispose") {
+        this.setSelectAuditId(row.missionId);
         this.$router.push("auditDetails?model=dispose");
       } else if (this.model === "inquire") {
+        this.setSelectAuditId(row.missionId);
         this.$router.push("auditDetails?model=inquire");
       }
     },
@@ -172,52 +176,44 @@ export default {
           startTime: this.timevalue[1]
         }).then(res => {
           if (res.code === "1") {
-            console.log(res.data);
+            // console.log(res.data);
             this.total = res.data.total;
             this.tableData = res.data.records.map(item => {
-              // {
-              // { prop: "id", label: "序号" },
-              // { prop: "missionId", label: "任务编号" },
-              // { prop: "auditName", label: "姓名" },
-              // { prop: "auditMobile", label: "手机号" },
-              // { prop: "carNo", label: "车牌号" },
-              // { prop: "applyTime", label: "申请日期" },
-              // { prop: "auditStatus", label: "状态" }
-              // }
-
-              // {
-              // accountNo: "13316595376"
-              // applyTime: "2019-07-15T19:49:02.000+0000"
-              // auditBy: null
-              // auditMobile: "手机号"
-              // auditName: "姓名"
-              // auditStatus: 1
-              // auditTime: null
-              // carNo: "车牌号"
-              // drivingLicenseUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
-              // drivingPermitUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
-              // id: 3
-              // identityNo: "身份证号"
-              // missionId: "M201907151449023819"
-              // qualificationCertificateUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
-              // rejectReason: null
-              // userIdentifyUrl: "http://119.23.14.40/nrbc-admin-app/static/avatar_default.jpeg"
-              //               }
+              let StatusText = "";
+              switch (item.auditStatus) {
+                case 1:
+                  StatusText = "审核中";
+                  break;
+                case 2:
+                  StatusText = "审核通过";
+                  break;
+                case 3:
+                  StatusText = "审核驳回";
+                  break;
+                case 4:
+                  StatusText = "审核拒绝";
+                  break;
+                default:
+                  break;
+              }
               return {
                 id: item.id,
                 missionId: item.missionId,
                 auditName: item.auditName,
                 auditMobile: item.auditMobile,
                 carNo: item.carNo,
-                applyTime: item.applyTime,
-                auditStatus: item.auditStatus
+                applyTime: dateFormat(
+                  new Date(item.applyTime).getTime() / 1000,
+                  "yyyy-MM-dd hh:mm"
+                ),
+                auditStatus: StatusText
               };
             });
           }
         });
       } else if (model === "inquire") {
         getHistoryMissionListByPage({
-          auditStatus: 1,
+          auditStatus: +this.value === 1 ? null : +this.value,
           carNo: this.carNo,
           current: this.current,
           endTime: this.timevalue[0],
@@ -227,8 +223,44 @@ export default {
           startTime: this.timevalue[1]
         }).then(res => {
           if (res.code === "1") {
-            console.log(res.data);
+            // console.log(res.data);
             this.total = res.data.total;
+            this.tableData = res.data.records.map(item => {
+              let StatusText = "";
+              switch (item.auditStatus) {
+                case 1:
+                  StatusText = "审核中";
+                  break;
+                case 2:
+                  StatusText = "审核通过";
+                  break;
+                case 3:
+                  StatusText = "审核驳回";
+                  break;
+                case 4:
+                  StatusText = "审核拒绝";
+                  break;
+                default:
+                  break;
+              }
+              return {
+                id: item.id,
+                missionId: item.missionId,
+                auditName: item.auditName,
+                auditMobile: item.auditMobile,
+                carNo: item.carNo,
+                applyTime: dateFormat(
+                  new Date(item.applyTime).getTime() / 1000,
+                  "yyyy-MM-dd hh:mm"
+                ),
+                auditStatus: StatusText,
+                auditBy: item.auditBy,
+                auditTime: dateFormat(
+                  new Date(item.auditTime).getTime() / 1000,
+                  "yyyy-MM-dd hh:mm"
+                )
+              };
+            });
           }
         });
       }

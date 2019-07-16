@@ -8,7 +8,7 @@
     <!-- @close="handleClose" -->
     <!-- default-active="/productData" -->
     <el-menu
-      default-active="/auditDispose"
+      default-active="/productData"
       class="el-menu-vertical-demo"
       @select="handleSelect"
       text-color="#B0BAC9"
@@ -61,8 +61,8 @@ export default {
     };
   },
   mounted() {
-    // this.handleSelect("/productData");
-    this.handleSelect("/auditDispose");
+    this.handleSelect("/productData");
+    // this.handleSelect("/auditDispose");
   },
   methods: {
     handleSelect(index) {
@@ -110,9 +110,9 @@ export default {
   .el-menu-item.is-active {
     border-left: 3px solid rgba(110, 178, 57, 1);
   }
-  .is-active {
+  // .is-active {
     // background: rgba(135, 152, 173, 0.1);
     // border-left: 3px solid rgb(110, 178, 57);
-  }
+  // }
 }
 </style>

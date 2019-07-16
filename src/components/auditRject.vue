@@ -17,6 +17,8 @@
   </el-card>
 </template>
 <script>
+import { auditMission } from "@/https/api";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -26,6 +28,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["selectAuditId"]),
     showText() {
       return this.model === "rurn" ? "驳回" : "拒绝";
     },
@@ -50,11 +53,35 @@ export default {
   },
   methods: {
     submit() {
-      this.$message({
-        type: "success",
-        message: "提交通过"
+      console.log(this.otherText.trim().length);
+      if (this.otherText.trim().length !== 0) {
+        this.checkList.push(this.otherText.trim());
+      }
+      let rjectText = this.checkList.join(";");
+      let status = 0;
+      if (this.model === "rurn") {
+        status = 3;
+      } else if (this.model === "reject") {
+        status = 4;
+      }
+      auditMission({
+        missionId: this.selectAuditId,
+        auditStatus: status,
+        rejectReason: rjectText
+      }).then(res => {
+        if (res.code === "1") {
+          this.$message({
+            type: "success",
+            message: "提交通过"
+          });
+          this.$router.replace("/auditDispose");
+        } else {
+          this.$message({
+            type: "info",
+            message: res.msg
+          });
+        }
       });
-      console.log(this.$router.replace('/auditDispose'))
     }
   }
 };
