@@ -80,7 +80,7 @@ export default {
       } else {
         this.errmsg = result.msg;
         this.$message.error(this.errmsg);
-      }
+      } 
       // this.setUserInfo({
       //   name: "你爸爸爸爸爸爸吧",
       //   accountNo: "17512088321"

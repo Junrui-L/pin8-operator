@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 import { auditMission, getMissionDetail } from "@/https/api";
 export default {
   data() {
@@ -95,10 +95,17 @@ export default {
         });
         this.auditFlag = res.data.auditStatus;
         this.rejectReason = res.data.rejectReason.split(';');
+      } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+        this.$message.error(result.msg);
+        this.clearUserInfo();
+        this.$router.push("/login");
+      } else {
+        this.$message.error(result.msg);
       }
     });
   },
   methods: {
+    ...mapActions(["clearUserInfo"]),
     auditPass() {
       this.$confirm("确认通过审核吗", "提示", {
         confirmButtonText: "确定",
@@ -118,11 +125,12 @@ export default {
                 message: "审核通过"
               });
               this.$router.back();
+            } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+              this.$message.error(result.msg);
+              this.clearUserInfo();
+              this.$router.push("/login");
             } else {
-              this.$message({
-                type: "info",
-                message: res.msg
-              });
+              this.$message.error(result.msg);
             }
           });
         })

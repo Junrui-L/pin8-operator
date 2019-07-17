@@ -143,7 +143,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setSelectAuditId"]),
+    ...mapActions(["setSelectAuditId","clearUserInfo"]),
     // 列表点击其中一行
     headleClick(row) {
       if (this.model === "dispose") {
@@ -209,6 +209,12 @@ export default {
                 auditStatus: StatusText
               };
             });
+          } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+            this.$message.error(result.msg);
+            this.clearUserInfo();
+            this.$router.push("/login");
+          } else {
+            this.$message.error(result.msg);
           }
         });
       } else if (model === "inquire") {
@@ -261,6 +267,12 @@ export default {
                 )
               };
             });
+          } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+            this.$message.error(result.msg);
+            this.clearUserInfo();
+            this.$router.push("/login");
+          } else {
+            this.$message.error(result.msg);
           }
         });
       }

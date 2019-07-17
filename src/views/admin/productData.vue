@@ -40,15 +40,12 @@ export default {
       .then(result => {
         if (result.code === "1") {
           this.cardData = result.data;
-        } else if (result.code === "10002") {
+        } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+          this.$message.error(result.msg);
           this.clearUserInfo();
           this.$router.push("/login");
         } else {
           this.$message.error(result.msg);
-          // setTimeout(() => {
-          //   this.clearUserInfo();
-          //   this.$router.push("/login");
-          // }, 500);
         }
       })
       .catch(err => {

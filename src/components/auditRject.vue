@@ -18,7 +18,7 @@
 </template>
 <script>
 import { auditMission } from "@/https/api";
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -52,6 +52,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["clearUserInfo"]),
     submit() {
       console.log(this.otherText.trim().length);
       if (this.otherText.trim().length !== 0) {
@@ -75,11 +76,12 @@ export default {
             message: "提交通过"
           });
           this.$router.replace("/auditDispose");
+        } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
+          this.$message.error(result.msg);
+          this.clearUserInfo();
+          this.$router.push("/login");
         } else {
-          this.$message({
-            type: "info",
-            message: res.msg
-          });
+          this.$message.error(result.msg);
         }
       });
     }
