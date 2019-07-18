@@ -47,13 +47,7 @@
         </div>
       </div>
       <div class="main">
-        <el-table
-          :data="tableData"
-          @row-click="headleClick"
-          height="550"
-          border
-          style="width: 100%"
-        >
+        <el-table :data="tableData" @row-click="headleClick" border style="width: 100%">
           <!-- width=170  -->
           <el-table-column
             v-for="(item,index) in columnList"
@@ -62,6 +56,8 @@
             :label="item.label"
           ></el-table-column>
         </el-table>
+      </div>
+      <div class="paging">
         <el-pagination
           background
           layout="prev, pager, next"
@@ -111,7 +107,7 @@ export default {
   },
   props: ["model"],
   mounted() {
-    this.handleInquire(1)
+    this.handleInquire(1);
   },
   computed: {
     columnList() {
@@ -143,7 +139,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setSelectAuditId","clearUserInfo"]),
+    ...mapActions(["setSelectAuditId", "clearUserInfo"]),
     // 列表点击其中一行
     headleClick(row) {
       if (this.model === "dispose") {
@@ -209,12 +205,17 @@ export default {
                 auditStatus: StatusText
               };
             });
-          } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
-            this.$message.error(result.msg);
-            this.clearUserInfo();
-            this.$router.push("/login");
+          } else if (
+            res.code === "20011" ||
+            res.code === "10001" ||
+            res.code === "10002" ||
+            res.code === "10003"
+          ) {
+            // this.$message.error(res.msg);
+            // this.clearUserInfo();
+            // this.$router.push("/login");
           } else {
-            this.$message.error(result.msg);
+            this.$message.error(res.msg);
           }
         });
       } else if (model === "inquire") {
@@ -267,12 +268,17 @@ export default {
                 )
               };
             });
-          } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
-            this.$message.error(result.msg);
+          } else if (
+            res.code === "20011" ||
+            res.code === "10001" ||
+            res.code === "10002" ||
+            res.code === "10003"
+          ) {
+            this.$message.error(res.msg);
             this.clearUserInfo();
             this.$router.push("/login");
           } else {
-            this.$message.error(result.msg);
+            this.$message.error(res.msg);
           }
         });
       }
@@ -293,6 +299,8 @@ export default {
   .el-card {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     .list-header {
       width: 100%;
       display: flex;
@@ -304,7 +312,7 @@ export default {
       .bottom {
         width: 100%;
         display: flex;
-        margin-top: 10px;
+        margin-top: 5px;
       }
       .condition-item {
         width: 33.33333333333333%;
@@ -315,7 +323,7 @@ export default {
         .condition-title {
           display: inline-block;
           width: 150px;
-          font-size: 20px;
+          font-size: 14px;
         }
         .input {
           /deep/ .el-input__inner {
@@ -332,10 +340,18 @@ export default {
             0px 4px 6px 0px rgba(50, 50, 93, 0.11);
           border-radius: 4px;
           min-width: 100px;
-          height: 60px;
+          height: 50px;
           margin-left: 40px;
         }
       }
+    }
+    /deep/ .el-card__body {
+      flex: 1;
+      display:inline-flex;
+      flex-direction: column;
+    }
+    .main {
+      flex: 1;
     }
     .el-pagination {
       float: right;

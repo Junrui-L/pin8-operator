@@ -95,12 +95,12 @@ export default {
         });
         this.auditFlag = res.data.auditStatus;
         this.rejectReason = res.data.rejectReason.split(';');
-      } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
-        this.$message.error(result.msg);
+      } else if (res.code === "20011" || res.code === "10001" || res.code === "10002" || res.code === "10003") {
+        this.$message.error(res.msg);
         this.clearUserInfo();
         this.$router.push("/login");
       } else {
-        this.$message.error(result.msg);
+        this.$message.error(res.msg);
       }
     });
   },
@@ -125,12 +125,12 @@ export default {
                 message: "审核通过"
               });
               this.$router.back();
-            } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
-              this.$message.error(result.msg);
+            } else if (res.code === "20011" || res.code === "10001" || res.code === "10002" || res.code === "10003") {
+              this.$message.error(res.msg);
               this.clearUserInfo();
               this.$router.push("/login");
             } else {
-              this.$message.error(result.msg);
+              this.$message.error(res.msg);
             }
           });
         })

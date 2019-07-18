@@ -4,7 +4,7 @@
     <el-container>
       <el-header><adminHeader></adminHeader></el-header>
       <el-main><router-view></router-view></el-main>
-      <el-footer><adminFooter></adminFooter></el-footer>
+      <el-footer><adminFooter v-if="$route.fullPath === '/productData' || $route.fullPath === '/income'"></adminFooter></el-footer>
     </el-container>
   </el-container>
 </template>
@@ -18,6 +18,7 @@ export default {
     ...mapGetters(["userInfo"])
   },
   mounted (){
+    console.log( this.$route.fullPath)
     if (!this.userInfo) {
       this.$router.replace("/login");
     }

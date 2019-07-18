@@ -76,12 +76,12 @@ export default {
             message: "提交通过"
           });
           this.$router.replace("/auditDispose");
-        } else if (result.code === "20011" || result.code === "10001" || result.code === "10002" || result.code === "10003") {
-          this.$message.error(result.msg);
+        } else if (res.code === "20011" || res.code === "10001" || res.code === "10002" || res.code === "10003") {
+          this.$message.error(res.msg);
           this.clearUserInfo();
           this.$router.push("/login");
         } else {
-          this.$message.error(result.msg);
+          this.$message.error(res.msg);
         }
       });
     }
